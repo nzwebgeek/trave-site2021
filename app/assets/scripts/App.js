@@ -3,12 +3,27 @@ import MobileMenu from './modules/MobileMenu'
 import RevealOnScroll from './modules/RevealOnScroll'
 import StickyHeader from './modules/StickyHeader';
 
- let stickyHeader = new StickyHeader()
+ new StickyHeader()
  new RevealOnScroll(document.querySelectorAll('.feature-item'), 75);
  new RevealOnScroll(document.querySelectorAll('.testimonial'), 60);
+ new MobileMenu();
+ let modal;
 
+ document.querySelectorAll('.open-modal').forEach(element => { 
+   element.addEventListener('click', e => {
+     e.preventDefault()
 
-let mobileMenu = new MobileMenu();
+    if(typeof modal == 'undefined'){
+      import(/* webpackChunkName: "modal" */ './modules/Modal').then(x => {
+        modal = new x.default()
+        setTimeout(() => modal.openTheModal(), 20)
+       }).catch(() => console.log('problem'))
+    }
+    else{
+      modal.openTheModal()
+    }
+   })
+ })
 
 if (module.hot) {
   module.hot.accept()
